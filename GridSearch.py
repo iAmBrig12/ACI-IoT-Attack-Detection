@@ -1,8 +1,8 @@
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
-from Net_Classifier import Net
-import data_preproccess
-import numpy as np
+from NetClassifier import Net
+import DataPreprocess
+import pandas as pd
 
 # Define the parameter grid
 param_grid = {
@@ -11,10 +11,10 @@ param_grid = {
     'num_epochs': [100, 200]
 }
 
-X_train = data_preproccess.X_train.to_numpy()
-y_train = data_preproccess.y_train.to_numpy()
-X_test = data_preproccess.X_test.to_numpy()
-y_test = data_preproccess.y_test.to_numpy()
+X_train = pd.read_csv('X_train.csv').to_numpy()
+y_train = pd.read_csv('y_train.csv').to_numpy()
+X_test = pd.read_csv('X_test.csv').to_numpy()
+y_test = pd.read_csv('y_test.csv').to_numpy()
 
 # Create a GridSearchCV object
 grid_search = GridSearchCV(Net(), param_grid, cv=3, scoring='accuracy')

@@ -5,11 +5,21 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 
 
 class Net(BaseEstimator, ClassifierMixin):
-    def __init__(self, hidden_sizes=[5], learning_rate=0.01, num_epochs=100):
-        self.hidden_sizes = hidden_sizes
-        self.learning_rate = learning_rate
-        self.num_epochs = num_epochs
-        self.model = None
+    def __init__(self, input_size, output_size, hidden_sizes):
+        super(Net, self).__init__()
+        
+        layers = []
+
+        layers.append(nn.Linear(input_size, hidden_sizes[0]))
+        layers.append(nn.ReLU())
+        
+        for i in range(1, len(hidden_sizes)):
+            layers.append(nn.Linear(hidden_sizes[i-1], hidden_sizes[i]))
+            layers.append(nn.ReLU())
+
+        layers.append(nn.Linear(hidden_sizes[-1], output_size))
+
+        self.model = nn.Sequential(*layers)
 
     def fit(self, X, y):
         # Convert data to PyTorch tensors
