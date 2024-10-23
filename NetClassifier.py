@@ -3,10 +3,13 @@ import torch.nn as nn
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 
-
 class Net(BaseEstimator, ClassifierMixin):
-    def __init__(self, input_size, output_size, hidden_sizes):
+    def __init__(self, input_size, hidden_sizes, output_size, learning_rate=0.001, num_epochs=100):
         super(Net, self).__init__()
+        
+        self.hidden_sizes = hidden_sizes
+        self.learning_rate = learning_rate
+        self.num_epochs = num_epochs
         
         layers = []
 
@@ -18,34 +21,30 @@ class Net(BaseEstimator, ClassifierMixin):
             layers.append(nn.ReLU())
 
         layers.append(nn.Linear(hidden_sizes[-1], output_size))
+        layers.append(nn.Sigmoid())  # Use Sigmoid for multi-label classification
 
         self.model = nn.Sequential(*layers)
 
     def fit(self, X, y):
         # Convert data to PyTorch tensors
         X_tensor = torch.FloatTensor(X)
-        y_tensor = torch.LongTensor(y)
+        y_tensor = torch.FloatTensor(y)  # Ensure y_tensor is of type Float
 
-        # Initialize the model, loss function, and optimizer
-        self.model = Net(input_size=X.shape[1], output_size=len(np.unique(y)), hidden_sizes=self.hidden_sizes)
-        criterion = nn.CrossEntropyLoss()
+        # Initialize the loss function and optimizer
+        criterion = nn.BCELoss()  # Use BCELoss for multi-label classification
         optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
 
         # Training loop
         for epoch in range(self.num_epochs):
-            optimizer.zero_grad()  # Zero gradients
-            outputs = self.model(X_tensor)  # Forward pass
-            loss = criterion(outputs, y_tensor)  # Compute loss
-            loss.backward()  # Backward pass
-            optimizer.step()  # Update weights
-
-        return self
+            optimizer.zero_grad()
+            outputs = self.model(X_tensor)
+            loss = criterion(outputs, y_tensor)
+            loss.backward()
+            optimizer.step()
 
     def predict(self, X):
         # Convert data to PyTorch tensor
         X_tensor = torch.FloatTensor(X)
         with torch.no_grad():
             outputs = self.model(X_tensor)
-            _, predicted = torch.max(outputs.data, 1)  # Get predicted class
-        return predicted.numpy()
-
+        return outputs.numpy()
