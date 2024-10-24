@@ -15,11 +15,12 @@ class Net(nn.Module):
             layers.append(nn.ReLU())
 
         layers.append(nn.Linear(hidden_sizes[-1], output_size))
+        layers.append(nn.Sigmoid())  # Add Sigmoid activation for multi-label classification
 
         self.model = nn.Sequential(*layers)
 
     def fit(self, X, y, epochs=1000, lr=0.01):
-        criterion = nn.CrossEntropyLoss()
+        criterion = nn.BCEWithLogitsLoss()  # Use BCEWithLogitsLoss for multi-label classification
         optimizer = torch.optim.Adam(self.model.parameters(), lr=lr)
         
         for epoch in range(epochs):
@@ -28,7 +29,9 @@ class Net(nn.Module):
             loss = criterion(y_pred, y)
             loss.backward()
             optimizer.step()
-
+            
+            if (epoch+1) % int(epochs/10) == 0:
+                print(f'Epoch {epoch+1}, Loss: {loss.item()}')
 
     def forward(self, x):
         return self.model(x)
