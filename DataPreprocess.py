@@ -1,8 +1,12 @@
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 
 def process_data():
     df = pd.read_csv('ACI-IoT-2023.csv')
+
+    df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    df.dropna(axis='rows', inplace=True)
 
     remove_cols = ['Flow ID', 'Src IP', 'Dst IP', 'Timestamp', 'Label']
 
