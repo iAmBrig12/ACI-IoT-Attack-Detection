@@ -15,7 +15,7 @@ class Net(nn.Module):
         x = self.sigmoid(x)
         return x
     
-    def fit(self, X, y, num_epochs, learning_rate, batch_size=256):
+    def fit(self, X, y, num_epochs, learning_rate, batch_size=256, num_workers=4):
         print('Training the network...')
         criterion = nn.BCEWithLogitsLoss()
         optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate)
@@ -24,9 +24,9 @@ class Net(nn.Module):
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.to(device)
         
-        # Create TensorDataset and DataLoader
+        # Create TensorDataset and DataLoader with multiple workers
         dataset = TensorDataset(X, y)
-        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
         
         for epoch in range(num_epochs):
             for inputs, targets in dataloader:
@@ -34,17 +34,14 @@ class Net(nn.Module):
                 inputs, targets = inputs.to(device), targets.to(device)
                 
                 optimizer.zero_grad()
-                outputs = self.forward(inputs)
+                outputs = self(inputs)
                 loss = criterion(outputs, targets)
                 loss.backward()
                 optimizer.step()
-
-            if (epoch+1) % int(num_epochs/10) == 0:
-                print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item()}')
+        
+        print('Training complete.')
 
     def predict(self, X):
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.to(device)
-        X = X.to(device)
-        outputs = self(X)
-        return torch.round(outputs)
+        self.eval()
+        with torch.no_grad():
+            return self.forward(X)
