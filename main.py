@@ -28,3 +28,12 @@ if __name__ == '__main__':
         print(f'Recall: {recall_score(y_test[:, i], y_pred[:, i])}')
         print(f'F1 Score: {f1_score(y_test[:, i], y_pred[:, i])}')
         print()
+
+    # Overall evaluation
+    print('Overall:')
+    print(f'Accuracy: {accuracy_score(y_test, y_pred)}')
+    print(f'Precision: {precision_score(y_test, y_pred, average="weighted")}')
+    print(f'Recall: {recall_score(y_test, y_pred, average="weighted")}')
+    print(f'F1 Score: {f1_score(y_test, y_pred, average="weighted")}')
+    
+    # y_pred.to_csv('y_pred.csv', index=False)
