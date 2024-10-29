@@ -1,19 +1,10 @@
-import torch
-import pandas as pd
 from NetClassifier import Net
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import DataPreprocess
 
 if __name__ == '__main__':
-    # Load data
-    X_train = pd.read_csv('X_train.csv').values
-    X_test = pd.read_csv('X_test.csv').values
-    y_train = pd.read_csv('y_train.csv').values
-    y_test = pd.read_csv('y_test.csv').values
-
-    # Convert NumPy arrays to PyTorch tensors
-    X_train = torch.tensor(X_train, dtype=torch.float32)
-    X_test = torch.tensor(X_test, dtype=torch.float32)
-    y_train = torch.tensor(y_train, dtype=torch.float32)
+    # Step 1: Load and preprocess the data
+    X_train, X_test, y_train, y_test = DataPreprocess.get_data()
 
     # Step 2: Initialize the network
     input_size = X_train.shape[1]
@@ -29,16 +20,11 @@ if __name__ == '__main__':
     # Step 3: Evaluate the network
     y_pred = net.predict(X_test)
 
-    # Convert predictions to NumPy arrays if necessary
-    y_pred = y_pred.detach().numpy()
-
-    # Calculate evaluation metrics
-    accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred, average='weighted')
-    recall = recall_score(y_test, y_pred, average='weighted')
-    f1 = f1_score(y_test, y_pred, average='weighted')
-
-    print(f"Accuracy: {accuracy}")
-    print(f"Precision: {precision}")
-    print(f"Recall: {recall}")
-    print(f"F1 Score: {f1}")
+    # Per label evaluation
+    for i in range(output_size):
+        print(f'Label {i+1}:')
+        print(f'Accuracy: {accuracy_score(y_test[:, i], y_pred[:, i])}')
+        print(f'Precision: {precision_score(y_test[:, i], y_pred[:, i])}')
+        print(f'Recall: {recall_score(y_test[:, i], y_pred[:, i])}')
+        print(f'F1 Score: {f1_score(y_test[:, i], y_pred[:, i])}')
+        print()
