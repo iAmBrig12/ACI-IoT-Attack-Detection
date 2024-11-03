@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 def process_data():
     df = pd.read_csv('ACI-IoT-2023.csv')
@@ -16,7 +17,16 @@ def process_data():
     y = pd.get_dummies(y, dtype=int)
     X = pd.get_dummies(X, columns=['Connection Type'], dtype=int)
 
+    scaler = StandardScaler()
+    X = scaler.fit_transform(X)
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.2, random_state=69)
+
+    # Convert numpy arrays back to DataFrames
+    X_train = pd.DataFrame(X_train)
+    X_test = pd.DataFrame(X_test)
+    y_train = pd.DataFrame(y_train)
+    y_test = pd.DataFrame(y_test)
 
     X_train.to_csv('X_train.csv', index=False)
     X_test.to_csv('X_test.csv', index=False)
