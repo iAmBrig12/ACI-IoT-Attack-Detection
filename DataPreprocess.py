@@ -9,7 +9,7 @@ def process_data():
     df.replace([np.inf, -np.inf], np.nan, inplace=True)
     df.dropna(axis='rows', inplace=True)
 
-    remove_cols = ['Flow ID', 'Src IP', 'Dst IP', 'Timestamp', 'Label']
+    remove_cols = ['Flow Bytes/s', 'Flow Packets/s', 'Flow ID', 'Src IP', 'Dst IP', 'Timestamp', 'Label']
 
     X = df.drop(columns=remove_cols)
     y = df['Label']
