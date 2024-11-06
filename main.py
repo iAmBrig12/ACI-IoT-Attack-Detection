@@ -10,7 +10,7 @@ if __name__ == '__main__':
     input_size = X_train.shape[1]
     output_size = y_train.shape[1]
     learning_rate = 0.001
-    num_epochs = 1000
+    num_epochs = 10000
 
     net = Net(input_size, output_size)
 
@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     # Step 3: Evaluate the network
     y_pred = net.predict(X_test)
-    y_pred_binary = (y_pred > 0.5).astype(int)  # Convert continuous predictions to binary
+    y_pred_binary = (y_pred > 0.5).astype(int)  # Convert predictions to binary
 
     # Per label evaluation
     labels = ['ARP Spoofing', 'Benign', 'DNS Flood', 'Dictionary Attack',
@@ -27,15 +27,16 @@ if __name__ == '__main__':
     for i in range(output_size):
         print(f'{labels[i]}:')
         print(f'Accuracy: {accuracy_score(y_test[:, i], y_pred_binary[:, i])}')
-        print(f'Precision: {precision_score(y_test[:, i], y_pred_binary[:, i])}')
-        print(f'Recall: {recall_score(y_test[:, i], y_pred_binary[:, i])}')
+        print(f'Precision: {precision_score(y_test[:, i], y_pred_binary[:, i], zero_division=0)}')
+        print(f'Recall: {recall_score(y_test[:, i], y_pred_binary[:, i], zero_division=0)}')
         print(f'F1 Score: {f1_score(y_test[:, i], y_pred_binary[:, i])}')
-        print(f'Confusion Matrix:\n{confusion_matrix(y_test[:, i], y_pred_binary[:, i])}')  # Add confusion matrix
+        print(f'Confusion Matrix:\n{confusion_matrix(y_test[:, i], y_pred_binary[:, i])}')
         print()
 
     # Overall evaluation
     print('Overall:')
     print(f'Accuracy: {accuracy_score(y_test, y_pred_binary)}')
-    print(f'Precision: {precision_score(y_test, y_pred_binary, average="weighted")}')
-    print(f'Recall: {recall_score(y_test, y_pred_binary, average="weighted")}')
+    print(f'Precision: {precision_score(y_test, y_pred_binary, average="weighted", zero_division=0)}')
+    print(f'Recall: {recall_score(y_test, y_pred_binary, average="weighted", zero_division=0)}')
     print(f'F1 Score: {f1_score(y_test, y_pred_binary, average="weighted")}')
+
