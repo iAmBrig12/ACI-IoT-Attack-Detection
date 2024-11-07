@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import time  # Import time module
+import time 
 
 class Net(nn.Module):
     def __init__(self, input_size, output_size):
@@ -9,7 +9,7 @@ class Net(nn.Module):
         # Define the network architecture
         self.fc1 = nn.Linear(input_size, 64)
         self.leaky_relu = nn.LeakyReLU()
-        self.fc4 = nn.Linear(64, output_size)
+        self.fc2 = nn.Linear(64, output_size)
 
         # Check for GPU availability 
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -18,7 +18,7 @@ class Net(nn.Module):
     def forward(self, x):
         x = self.fc1(x)
         x = self.leaky_relu(x)
-        x = self.fc4(x) 
+        x = self.fc2(x) 
         return x  
     
     def fit(self, X, y, num_epochs, learning_rate):
@@ -34,8 +34,9 @@ class Net(nn.Module):
         self.to(self.device)  
         self.train() 
         
-        start_time = time.time()  # Start timer
+        start_time = time.time()
         
+        # Training loop
         for epoch in range(num_epochs):
             optimizer.zero_grad()
             outputs = self(X)
@@ -44,7 +45,7 @@ class Net(nn.Module):
             optimizer.step()
             
             if (epoch+1) % (num_epochs/10) == 0:
-                torch.cuda.synchronize()  # Synchronize for accurate timing
+                torch.cuda.synchronize() 
                 print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
 
         end_time = time.time() 

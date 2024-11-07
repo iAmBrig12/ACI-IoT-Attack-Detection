@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.preprocessing import StandardScaler
 
 def process_data():
@@ -20,7 +20,10 @@ def process_data():
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.2, random_state=69)
+    sss = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=69)
+    for train_index, test_index in sss.split(X, y):
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
     # Convert numpy arrays back to DataFrames
     X_train = pd.DataFrame(X_train)
