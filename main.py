@@ -25,11 +25,16 @@ if __name__ == '__main__':
        'ICMP Flood', 'OS Scan', 'Ping Sweep', 'Port Scan', 'SYN Flood',
        'Slowloris', 'UDP Flood', 'Vulnerability Scan']
     for i in range(output_size):
+        acc = accuracy_score(y_test[:, i], y_pred_binary[:, i])
+        prec = precision_score(y_test[:, i], y_pred_binary[:, i], zero_division=0)
+        rec = recall_score(y_test[:, i], y_pred_binary[:, i], zero_division=0)
+        f1 = f1_score(y_test[:, i], y_pred_binary[:, i])
+
         print(f'{labels[i]}:')
-        print(f'Accuracy: {accuracy_score(y_test[:, i], y_pred_binary[:, i])}')
-        print(f'Precision: {precision_score(y_test[:, i], y_pred_binary[:, i], zero_division=0)}')
-        print(f'Recall: {recall_score(y_test[:, i], y_pred_binary[:, i], zero_division=0)}')
-        print(f'F1 Score: {f1_score(y_test[:, i], y_pred_binary[:, i])}')
+        print(f'Accuracy: {acc}')
+        print(f'Precision: {prec}')
+        print(f'Recall: {rec}')
+        print(f'F1 Score: {f1}')
         print(f'Confusion Matrix:\n{confusion_matrix(y_test[:, i], y_pred_binary[:, i])}')
         print()
 

@@ -6,6 +6,7 @@ from sklearn.preprocessing import StandardScaler
 def process_data():
     df = pd.read_csv('ACI-IoT-2023.csv')
 
+    # Remove NaN and infinite values
     df.replace([np.inf, -np.inf], np.nan, inplace=True)
     df.dropna(axis='rows', inplace=True)
 
@@ -14,12 +15,15 @@ def process_data():
     X = df.drop(columns=remove_cols)
     y = df['Label']
 
+    # Convert the categorical variables to binary
     y = pd.get_dummies(y, dtype=int)
     X = pd.get_dummies(X, columns=['Connection Type'], dtype=int)
 
+    # Standardize the data
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
 
+    # Split data into training and testing sets
     sss = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=69)
     for train_index, test_index in sss.split(X, y):
         X_train, X_test = X[train_index], X[test_index]
@@ -31,6 +35,7 @@ def process_data():
     y_train = pd.DataFrame(y_train)
     y_test = pd.DataFrame(y_test)
 
+    # Save the data
     X_train.to_csv('X_train.csv', index=False)
     X_test.to_csv('X_test.csv', index=False)
     y_train.to_csv('y_train.csv', index=False)
