@@ -7,7 +7,7 @@ import pandas as pd
 save_eval = False
 if len(sys.argv) > 1 and int(sys.argv[1]):
     save_eval = True
-    eval_df = pd.DataFrame(columns=['Lablel', 'Accuracy', 'Precision', 'Recall', 'F1 Score', 'Confusion Matrix'])
+    eval_df = pd.DataFrame(columns=['Label', 'Accuracy', 'Precision', 'Recall', 'F1 Score', 'Confusion Matrix'])
 
 if __name__ == '__main__':
     # Step 1: Load and preprocess the data
@@ -48,7 +48,7 @@ if __name__ == '__main__':
         print()
 
         if save_eval:
-            eval_df = eval_df.append({'Label': labels[i], 'Accuracy': acc, 'Precision': prec, 'Recall': rec, 'F1 Score': f1, 'Confusion Matrix': cm}, ignore_index=True)
+            eval_df = pd.concat([eval_df, pd.DataFrame([{'Label': labels[i], 'Accuracy': acc, 'Precision': prec, 'Recall': rec, 'F1 Score': f1, 'Confusion Matrix': cm}])], ignore_index=True)
 
     # Overall evaluation
     acc = accuracy_score(y_test, y_pred_binary)
@@ -63,6 +63,6 @@ if __name__ == '__main__':
     print(f'F1 Score: {f1}')
 
     if save_eval:
-        eval_df = eval_df.append({'Label': 'Overall', 'Accuracy': acc, 'Precision': prec, 'Recall': rec, 'F1 Score': f1, 'Confusion Matrix': 'n/a'}, ignore_index=True)
+        eval_df = pd.concat([eval_df, pd.DataFrame([{'Label': 'Overall', 'Accuracy': acc, 'Precision': prec, 'Recall': rec, 'F1 Score': f1, 'Confusion Matrix': 'n/a'}])], ignore_index=True)
         eval_df.to_csv('evaluation.csv', index=False)
 
