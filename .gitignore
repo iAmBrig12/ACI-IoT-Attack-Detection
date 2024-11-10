@@ -4,3 +4,4 @@ X_*
 y_*
 *.ipynb
 venv
+__pycache__
