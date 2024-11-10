@@ -3,11 +3,11 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import DataPreprocess
 import sys
 import pandas as pd
+import numpy as np
 
-save_eval = False
+save_predictions = False
 if len(sys.argv) > 1 and int(sys.argv[1]):
-    save_eval = True
-    eval_df = pd.DataFrame(columns=['Label', 'Accuracy', 'Precision', 'Recall', 'F1 Score', 'Confusion Matrix'])
+    save_predictions = True
 
 if __name__ == '__main__':
     # Step 1: Load and preprocess the data
@@ -21,6 +21,7 @@ if __name__ == '__main__':
 
     net = Net(input_size, output_size)
 
+    # Train the network
     net.fit(X_train, y_train, num_epochs, learning_rate)
 
     # Step 3: Evaluate the network
@@ -32,6 +33,12 @@ if __name__ == '__main__':
        'ICMP Flood', 'OS Scan', 'Ping Sweep', 'Port Scan', 'SYN Flood',
        'Slowloris', 'UDP Flood', 'Vulnerability Scan']
     
+    # Save predictions if required
+    if save_predictions:
+        predictions_df = pd.DataFrame(y_pred_binary, columns=labels)
+        predictions_df.to_csv('predictions.csv', index=False)
+
+    # Per label evaluation
     for i in range(output_size):
         acc = accuracy_score(y_test[:, i], y_pred_binary[:, i])
         prec = precision_score(y_test[:, i], y_pred_binary[:, i], zero_division=0)
@@ -47,9 +54,6 @@ if __name__ == '__main__':
         print(f'Confusion Matrix:\n{cm}')
         print()
 
-        if save_eval:
-            eval_df = pd.concat([eval_df, pd.DataFrame([{'Label': labels[i], 'Accuracy': acc, 'Precision': prec, 'Recall': rec, 'F1 Score': f1, 'Confusion Matrix': cm}])], ignore_index=True)
-
     # Overall evaluation
     acc = accuracy_score(y_test, y_pred_binary)
     prec = precision_score(y_test, y_pred_binary, average="weighted", zero_division=0)
@@ -61,8 +65,4 @@ if __name__ == '__main__':
     print(f'Precision: {prec}')
     print(f'Recall: {rec}')
     print(f'F1 Score: {f1}')
-
-    if save_eval:
-        eval_df = pd.concat([eval_df, pd.DataFrame([{'Label': 'Overall', 'Accuracy': acc, 'Precision': prec, 'Recall': rec, 'F1 Score': f1, 'Confusion Matrix': 'n/a'}])], ignore_index=True)
-        eval_df.to_csv('evaluation.csv', index=False)
 
