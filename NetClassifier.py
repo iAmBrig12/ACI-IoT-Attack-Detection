@@ -22,8 +22,7 @@ class Net(nn.Module):
         return x  
     
     def fit(self, X, y, num_epochs, learning_rate):
-        print('Training the network...')
-        class_weights = torch.tensor(1.0 / y.mean(axis=0), dtype=torch.float32).to(self.device)  
+        print('Training the network...') 
         criterion = nn.BCEWithLogitsLoss()
         optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate)
         
