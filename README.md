@@ -31,7 +31,7 @@ Nathaniel Bastian, David Bierbrauer, Morgan McKenzie, Emily Nack, December 29, 2
 
 ## Evaluation
 
-The main.py script evaluates the performance on various attack types and provides accuracy, precision, recall, and F1 score for each label as well as overall performance. 
+The main.py script evaluates the performance of the model detecting the 12 different attack types and provides accuracy, precision, recall, and F1 score for each label as well as overall performance. 
 
 The overall results are:
 - Accuracy: 	0.9929
