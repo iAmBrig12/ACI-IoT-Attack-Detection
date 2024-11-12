@@ -10,6 +10,16 @@ Cite:
 
 Nathaniel Bastian, David Bierbrauer, Morgan McKenzie, Emily Nack, December 29, 2023, "ACI IoT Network Traffic Dataset 2023", IEEE Dataport, doi:https://dx.doi.org/10.21227/qacj-3x32.
 
+## Tools
+
+The following tools and libraries are used in this project:
+
+- Python 3
+- PyTorch
+- scikit-learn
+- pandas
+- numpy
+
 ## Usage
 
 1. Preprocess the data:
