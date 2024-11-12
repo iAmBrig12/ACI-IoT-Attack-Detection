@@ -39,7 +39,7 @@ The overall results are:
 - Recall:		0.9932
 - F1:           0.9947
 
-![Confusion Matrix](confusion_matrix.png)
+![alt text](confusion_matrices.png)
 
 
 
