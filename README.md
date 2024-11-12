@@ -31,4 +31,15 @@ Nathaniel Bastian, David Bierbrauer, Morgan McKenzie, Emily Nack, December 29, 2
 
 ## Evaluation
 
-The main.py script evaluates the performance on various attack types and provides accuracy, precision, recall, and F1 score for each label as well as overall performance.
+The main.py script evaluates the performance on various attack types and provides accuracy, precision, recall, and F1 score for each label as well as overall performance. 
+
+The overall results are:
+- Accuracy: 	0.9929
+- Precision:	0.9954
+- Recall:		0.9932
+- F1:           0.9947
+
+![Confusion Matrix](confusion_matrix.png)
+
+
+
