@@ -4,7 +4,7 @@ This project aims to detect various types of attacks in IoT networks using a neu
 
 ## Dataset
 
-The Army Cyber Institute (ACI) Internet of Things (IoT) Network Traffic Dataset 2023 (ACI-IoT-2023) is a novel dataset tailored for machine learning (ML) applications in the realm of IoT network security. This effort focuses on delivering a distinctive and realistic dataset designed to train and evaluate ML models for IoT network environments. By addressing a gap in existing resources, this dataset aims to propel advancements in ML-based solutions, ultimately fortifying the security of IoT operations.
+The Army Cyber Institute (ACI) Internet of Things (IoT) Network Traffic Dataset 2023 (ACI-IoT-2023) is a cutting-edge dataset created specifically for machine learning (ML) applications in IoT network security. This dataset provides a unique and realistic resource for training and evaluating ML models in IoT network environments, filling a gap in available resources and supporting the development of ML-driven solutions to enhance the security of IoT operations.
 
 Cite:
 
